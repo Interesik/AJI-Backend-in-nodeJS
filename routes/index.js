@@ -1,17 +1,35 @@
-const express = require('express');
+//routes/index.js
+
+const express = require("express");
 const router = express.Router();
-//const cors = require('cors');
 
-const IndexController = require('../controllers/IndexController');
-const ProductsContorller = require('../controllers/ProductsController');
+// zdefiniowanie odpowiedzi dla "strony głównej"
+const IndexController = require("../controllers/IndexController");
+router.get("/",IndexController.home);
 
-//router.all('*', cors());
 
-router.get('/', IndexController.home);
+// zdefiniowanie odpowiedzi dla "kontroli stanu"
+const StatusController = require("../controllers/StatusController");
+router.get("/status", StatusController.getAll);
 
-router.get('/products', ProductsContorller.getAll);
-router.get('/products/:id', ProductsContorller.getById);
-router.post('/products', ProductsContorller.store);
-router.put('/products', ProductsContorller.updateById);
+
+// zdefiniowanie odpowiedzi dla "kontroli kategori"
+const CategoryController = require("../controllers/CategoryController");
+router.get("/categories", CategoryController.getAll);
+
+
+// zdefiniowanie odpowiedzi dla "kontroli produktów"
+const ProductController = require("../controllers/ProductController");
+router.get("/products", ProductController.getAll);
+router.get("/products/:id", ProductController.getById);
+router.post("/products", ProductController.store);
+router.put("/products/:id", ProductController.updateById);
+
+// zdefiniowanie odpowiedzi dla "kontroli zamówieni"
+const  OrderController = require("../controllers/OrderController");
+router.get("/orders",OrderController.getAll);
+
+
+
 
 module.exports = router;

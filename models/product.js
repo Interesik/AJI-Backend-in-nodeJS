@@ -1,11 +1,14 @@
 const bookshelf= require('../config/bookshelf');
-
+const Category = require('../models/category');
 const Product = bookshelf.Model.extend({
-    tableName: 'products'
+    tableName: 'produkt',
+    category() {
+        return this.hasOne(Category.Category,'id_kategoria','id')
+    }
 })
 
 module.exports.getAll = () => {
-    return Product.fetchAll();
+    return Product.fetchAll({withRelated: ['Category']});
 }
 
 module.exports.getById = (id) => {
@@ -14,10 +17,11 @@ module.exports.getById = (id) => {
 
 module.exports.create = (product) => {
     return new Product({
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        amount: product.amount
+        nazwa: product.nazwa,
+        opis: product.opis,
+        cena_jednostkowa: product.cena_jednostkowa,
+        waga_jednostkowa: product.waga_jednostkowa,
+        id_kategoria : product.id_kategoria
     }).save();
 };
 
@@ -25,10 +29,11 @@ module.exports.update = (product) => {
     return new Product({
         id: product.id
     }).save( {
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        amount: product.amount
+        nazwa: product.nazwa,
+        opis: product.opis,
+        cena_jednostkowa: product.cena_jednostkowa,
+        waga_jednostkowa: product.waga_jednostkowa,
+        id_kategoria : product.id_kategoria
         }, 
         {patch: true}
     );

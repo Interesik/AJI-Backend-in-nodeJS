@@ -1,27 +1,29 @@
 const bookshelf= require('../config/bookshelf');
-const Category = require('../models/category');
 const Product = bookshelf.Model.extend({
     tableName: 'produkt',
     category() {
-        return this.hasOne(Category.Category,'id_kategoria','id')
+        return this.hasOne(Category,'id','id_kategoria')
     }
+})
+const Category = bookshelf.Model.extend({
+    tableName: 'kategoria',
 })
 
 module.exports.getAll = () => {
-    return Product.fetchAll({withRelated: ['Category']});
+    return Product.fetchAll({withRelated: ['category']});
 }
 
 module.exports.getById = (id) => {
-    return new Product({'id':id}).fetch();
+    return new Product({'id':id}).fetch({withRelated: ['category']});
 }
 
-module.exports.create = (product) => {
+module.exports.create = (pr) => {
     return new Product({
-        nazwa: product.nazwa,
-        opis: product.opis,
-        cena_jednostkowa: product.cena_jednostkowa,
-        waga_jednostkowa: product.waga_jednostkowa,
-        id_kategoria : product.id_kategoria
+        nazwa: pr.nazwa,
+        opis: pr.opis,
+        cena_jednostokowa: pr.cena_jednostokowa,
+        waga_jednostokowa: pr.waga_jednostokowa,
+        id_kategoria: pr.id_kategoria
     }).save();
 };
 
@@ -31,9 +33,9 @@ module.exports.update = (product) => {
     }).save( {
         nazwa: product.nazwa,
         opis: product.opis,
-        cena_jednostkowa: product.cena_jednostkowa,
-        waga_jednostkowa: product.waga_jednostkowa,
-        id_kategoria : product.id_kategoria
+        cena_jednostokowa: product.cena_jednostokowa,
+        waga_jednostokowa: product.waga_jednostokowa,
+        id_kategoria: product.id_kategoria
         }, 
         {patch: true}
     );

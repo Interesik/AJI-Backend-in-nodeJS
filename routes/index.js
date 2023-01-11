@@ -28,6 +28,7 @@ router.put("/products/:id", ProductController.updateById);
 // zdefiniowanie odpowiedzi dla "kontroli zamówieni"
 const  OrderController = require("../controllers/OrderController");
 router.get("/orders",OrderController.getAll);
+router.post("/orders",OrderController.store);
 
 
 

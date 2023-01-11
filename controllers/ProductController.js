@@ -1,4 +1,3 @@
-const products = require('../data/ProductData');
 const Product = require('../models/product');
 const _ = require('underscore');
 
@@ -24,10 +23,11 @@ exports.getById = (req, res) => {
 
 exports.store = (req, res) => {
     const newProduct = Product.create({
-        'name': req.body.name,
-        'description': req.body.description,
-        'price': req.body.price,
-        'amount': req.body.amount,
+        'nazwa': req.body.nazwa,
+        'opis': req.body.opis,
+        'cena_jednostokowa': req.body.cena_jednostokowa,
+        'waga_jednostokowa': req.body.waga_jednostokowa,
+        'id_kategoria' : req.body.id_kategoria,
     }).then(function() {
         res.json({
             'status':'saved!',

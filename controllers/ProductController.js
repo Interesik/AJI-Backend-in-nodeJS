@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const { knex } = require('../config/bookshelf');
 const _ = require('underscore');
 
 exports.getAll = (req, res) => {
@@ -41,12 +42,28 @@ exports.store = (req, res) => {
 };
 
 exports.updateById = (req, res) => {
-    // Please note the API change!
-    Product.update(req.body.product).then(
-        function(product) {
-            res.json(product);
+    if (!req.body.nazwa || !req.body.opis)
+        throw Error('name or description are not defined')
+    else if(!req.body.cena_jednostokowa || !req.body.waga_jednostokowa)
+        throw Error('price or wage are not defined')
+    else if(req.body.cena_jednostokowa <= 0 || req.body.waga_jednostokowa <= 0)
+        throw Error('Product params are not correct')
+    else if(!req.body.id_kategoria)
+        throw Error('category is not defined')
+    knex.select('id').from('kategoria').where('id', req.body.id_kategoria).then(
+        function(category){
+            if(!category.length)
+                throw Error('Category dont exists')
+        // Please note the API change!
+            Product.update(req.params.id,req.body).then(
+                function(product) {
+                    res.json(product);
+                }
+            )
         }
-    )    
+    ).catch((error) => {
+        res.status(400).json({'message': error.message});
+    })
     // const currentProduct = _.find(products,function(product) { return product.id == req.params.id});
     // currentProduct.name = req.body.name;
     // currentProduct.description = req.body.description;

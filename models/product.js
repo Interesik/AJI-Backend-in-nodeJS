@@ -27,15 +27,14 @@ module.exports.create = (pr) => {
     }).save();
 };
 
-module.exports.update = (product) => {
+module.exports.update = (id,product) => {
     return new Product({
-        id: product.id
+        id: id
     }).save( {
         nazwa: product.nazwa,
         opis: product.opis,
         cena_jednostokowa: product.cena_jednostokowa,
         waga_jednostokowa: product.waga_jednostokowa,
-        id_kategoria: product.id_kategoria
         }, 
         {patch: true}
     );

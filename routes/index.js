@@ -29,7 +29,8 @@ router.put("/products/:id", ProductController.updateById);
 const  OrderController = require("../controllers/OrderController");
 router.get("/orders",OrderController.getAll);
 router.post("/orders",OrderController.store);
-
+router.put("/orders/:id/:status",OrderController.updateStatusById)
+router.get("/orders/status/:id",OrderController.getByStatus)
 
 
 

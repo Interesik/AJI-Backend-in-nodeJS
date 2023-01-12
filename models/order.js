@@ -35,10 +35,9 @@ module.exports.save = (order) => {
         numer_telefonu : order.numer_telefonu
     }).save();
 };
-
-module.exports.update = (order) => {
+module.exports.update = (id,order) => {
     return new Order({
-        id: order.id
+        id: id
     }).save( {
         nazwa: order.data_zatwierdzenia,
         id_stan_zamowienia: order.id_stan_zamowienia,
@@ -49,10 +48,20 @@ module.exports.update = (order) => {
         {patch: true}
     );
 }
+
+module.exports.updateStatus = (id,status) => {
+    return new Order({
+        id: id
+    }).save( {
+        id_stan_zamowienia: status,
+        },
+        {patch: true}
+    );
+}
 module.exports.getStatusOrders = (status) => {
     return new Order().query(qb => {
         qb.where('id_stan_zamowienia', status)
     }).fetchAll({
-        withRelated: ['orderProducts']
+        withRelated: ['products']
     })
- }
+}
